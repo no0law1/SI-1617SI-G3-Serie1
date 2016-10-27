@@ -43,7 +43,7 @@ public class AESEncryptionTest {
     @Test
     public void testLargeFile() throws Exception {
         InputStream toEncript = new FileInputStream(new File("src/test/files/test.pdf"));
-        OutputStream cipherText = new FileOutputStream(new File("src/test/files/cipherText.txt"));
+        OutputStream cipherText = new FileOutputStream(new File("src/test/files/cipherText.pdf"));
 
         aes.encrypt(toEncript, cipherText, key);
 
@@ -52,7 +52,7 @@ public class AESEncryptionTest {
         cipherText.close();
 
         // LOAD from file
-        InputStream toDecrypt = new FileInputStream(new File("src/test/files/cipherText.txt"));
+        InputStream toDecrypt = new FileInputStream(new File("src/test/files/cipherText.pdf"));
         OutputStream plainText = new FileOutputStream(new File("src/test/files/plainText.pdf"));
 
         aes.decrypt(toDecrypt, plainText, key);

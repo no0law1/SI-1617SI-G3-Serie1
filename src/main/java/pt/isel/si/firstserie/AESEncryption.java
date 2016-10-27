@@ -141,6 +141,7 @@ public class AESEncryption {
         }
     }
 */
+
     public byte[] encrypt(byte[] toEncrypt, SecretKey key) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         return cipher.doFinal(toEncrypt);
