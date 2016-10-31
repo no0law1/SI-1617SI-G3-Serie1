@@ -17,8 +17,8 @@ public class RSAEncryptionTest {
         KeyPair keyPair = RSAEncryption.generateRSAKey();
 
         assertEquals("RSA", keyPair.getPublic().getAlgorithm());
-        assertTrue(keyPair.getPublic().getEncoded().length > 4096 /8);
-        assertTrue(keyPair.getPrivate().getEncoded().length > 4096 /8);
+        assertTrue(keyPair.getPublic().getEncoded().length > 2048 /8);
+        assertTrue(keyPair.getPrivate().getEncoded().length > 2048 /8);
     }
 
     @Test

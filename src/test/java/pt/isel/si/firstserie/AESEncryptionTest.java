@@ -1,11 +1,12 @@
 package pt.isel.si.firstserie;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.crypto.SecretKey;
 import java.io.*;
+
+import static org.junit.Assert.*;
 
 /**
  * TODO: Commentary
@@ -24,7 +25,7 @@ public class AESEncryptionTest {
 
     @Test
     public void generateSecretKey() throws Exception {
-        Assert.assertEquals("AES", key.getAlgorithm());
+        assertEquals("AES", key.getAlgorithm());
     }
 
     @Test
@@ -37,7 +38,7 @@ public class AESEncryptionTest {
 
         byte[] actual = aes.decrypt(new ByteArrayInputStream(cipherText), key);
 
-        Assert.assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, actual);
     }
 
     @Test
