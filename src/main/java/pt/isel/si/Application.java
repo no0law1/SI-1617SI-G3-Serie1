@@ -15,7 +15,7 @@ public class Application {
     public static final int GCM_NONCE_LENGTH = 12; // in bytes
 
     public static void main(String[] args) throws Exception {
-        SecureRandom random = SecureRandom.getInstanceStrong();
+        SecureRandom random = SecureRandom.getInstanceStrong(); //call the strongest crypto source available in the system
 
         SecretKey key = AESEncryption.generateSecretKey();
 
