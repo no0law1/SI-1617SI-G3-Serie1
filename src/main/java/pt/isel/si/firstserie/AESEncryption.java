@@ -109,39 +109,6 @@ public class AESEncryption {
         return true;
     }
 
-/*
-    public byte[] encrypt(InputStream toEncrypt, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        cipher.init(Cipher.ENCRYPT_MODE, key, spec);
-        try(ByteArrayOutputStream stream = new ByteArrayOutputStream()){
-            byte[] chunk = new byte[AES_CHUNKS];
-
-            while (toEncrypt.read(chunk) != -1){
-                stream.write(cipher.update(chunk));
-            }
-            byte[] mark = cipher.doFinal();
-            if (mark != null) {
-                stream.write(mark);
-            }
-            return stream.toByteArray();
-        }
-    }
-
-    public byte[] decrypt(InputStream toDecrypt, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        cipher.init(Cipher.DECRYPT_MODE, key, spec);
-        try(ByteArrayOutputStream stream = new ByteArrayOutputStream()){
-            byte[] chunk = new byte[AES_CHUNKS];
-            while (toDecrypt.read(chunk) != -1){
-                stream.write(cipher.update(chunk));
-            }
-            byte[] mark = cipher.doFinal();
-            if (mark != null) {
-                stream.write(mark);
-            }
-            return stream.toByteArray();
-        }
-    }
-*/
-
     public byte[] encrypt(byte[] toEncrypt, SecretKey key) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         return cipher.doFinal(toEncrypt);

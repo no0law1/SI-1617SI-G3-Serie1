@@ -6,7 +6,8 @@ import org.junit.Test;
 import javax.crypto.SecretKey;
 import java.io.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * TODO: Commentary
@@ -20,7 +21,7 @@ public class AESEncryptionTest {
     @Before
     public void setUp() throws Exception {
         key = AESEncryption.generateSecretKey();
-        aes = AESEncryption.create("AES/GCM/NoPadding");
+        aes = AESEncryption.create(Algorithms.AES_GCM_NOPADDING);
     }
 
     @Test
@@ -57,13 +58,6 @@ public class AESEncryptionTest {
         OutputStream plainText = new FileOutputStream(new File("src/test/files/plainText.pdf"));
 
         aes.decrypt(toDecrypt, plainText, key);
-    }
-
-    @Test
-    public void testError() throws Exception {
-        SecretKey key = AESEncryption.generateSecretKey();
-
-        AESEncryption aes = AESEncryption.create("AES/GCM/NoPadding");
     }
 
 }
