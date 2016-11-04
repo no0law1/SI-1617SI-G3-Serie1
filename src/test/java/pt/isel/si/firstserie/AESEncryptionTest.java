@@ -20,7 +20,7 @@ public class AESEncryptionTest {
     @Before
     public void setUp() throws Exception {
         key = AESEncryption.generateSecretKey();
-        aes = AESEncryption.create(Algorithms.AES_GCM_NOPADDING);
+        aes = AESEncryption.create(Algorithms.AES_GCM_NOPADDING, AESEncryption.generateIV());
     }
 
     @Test

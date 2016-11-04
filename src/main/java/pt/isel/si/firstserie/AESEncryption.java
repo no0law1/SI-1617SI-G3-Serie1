@@ -28,6 +28,8 @@ public class AESEncryption {
 
     private GCMParameterSpec spec;
 
+    private byte[] authTag;
+
     private AESEncryption(Cipher cipher, GCMParameterSpec spec) {
         this.cipher = cipher;
         this.spec = spec;
@@ -43,16 +45,18 @@ public class AESEncryption {
 
     }
 
-    public static AESEncryption create(String protocol) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        SecureRandom random = SecureRandom.getInstanceStrong();
-
+    public static AESEncryption create(String protocol, byte[] nonce) throws NoSuchPaddingException, NoSuchAlgorithmException {
         Cipher cipher = Cipher.getInstance(protocol);
-
-        final byte[] nonce = new byte[GCM_NONCE_LENGTH];
-        random.nextBytes(nonce);
         GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH, nonce);
 
         return new AESEncryption(cipher, spec);
+    }
+
+    public static byte[] generateIV() throws NoSuchAlgorithmException {
+        SecureRandom random = SecureRandom.getInstanceStrong();
+        final byte[] nonce = new byte[GCM_NONCE_LENGTH];
+        random.nextBytes(nonce);
+        return nonce;
     }
 
     public byte[] encrypt(InputStream toEncrypt, SecretKey key) throws IOException,
@@ -146,12 +150,22 @@ public class AESEncryption {
     public byte[] encrypt(byte[] toEncrypt, SecretKey key) throws InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
-        return cipher.doFinal(toEncrypt);
+        byte[] encrypted = cipher.update(toEncrypt);
+        authTag = cipher.doFinal();
+        return encrypted;
     }
 
     public byte[] decrypt(byte[] toDecrypt, SecretKey key) throws InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.DECRYPT_MODE, key, spec);
         return cipher.doFinal(toDecrypt);
+    }
+
+    public GCMParameterSpec getSpec() {
+        return spec;
+    }
+
+    public byte[] getAuthTag() {
+        return authTag;
     }
 }

@@ -13,7 +13,7 @@ import java.util.Enumeration;
  */
 public class Keystores {
 
-    public static Key getPFXKeystoreKey(InputStream stream, char[] pass) throws KeyStoreException,
+    public static PrivateKey getPFXKeystoreKey(InputStream stream, char[] pass) throws KeyStoreException,
             CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableKeyException, NoAliasException {
         KeyStore store = KeyStore.getInstance("PKCS12");
         store.load(stream, pass);
@@ -22,6 +22,6 @@ public class Keystores {
         if(!aliases.hasMoreElements()){
             throw new NoAliasException("No Alias to get Key");
         }
-        return store.getKey(aliases.nextElement(), pass);
+        return (PrivateKey) store.getKey(aliases.nextElement(), pass);
     }
 }

@@ -22,20 +22,20 @@ public class CertificatesTest {
     @Before
     public void setUp() throws Exception {
         list = new LinkedList<>();
-        list.add(new FileInputStream(new File("src/test/files/cert.CAintermedia/CA1-int.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.CAintermedia/CA2-int.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.end.entities/Alice_1.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.end.entities/Alice_2.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.end.entities/Bob_1.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.end.entities/Bob_2.cer")));
-        list.add(new FileInputStream(new File("src/test/files/cert.end.entities/Carol_2.cer")));
-        list.add(new FileInputStream(new File("src/test/files/trust.anchors/CA1.cer")));
-        list.add(new FileInputStream(new File("src/test/files/trust.anchors/CA2.cer")));
-        //list.add(new FileInputStream(new File("src/test/files/pfx/Alice_1.pfx")));
-        //list.add(new FileInputStream(new File("src/test/files/pfx/Alice_2.pfx")));
-        //list.add(new FileInputStream(new File("src/test/files/pfx/Bob_1.pfx")));
-        //list.add(new FileInputStream(new File("src/test/files/pfx/Bob_2.pfx")));
-        //list.add(new FileInputStream(new File("src/test/files/pfx/Carol_2.pfx")));
+        list.add(new FileInputStream(new File("src/main/files/cert.CAintermedia/CA1-int.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.CAintermedia/CA2-int.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.end.entities/Alice_1.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.end.entities/Alice_2.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.end.entities/Bob_1.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.end.entities/Bob_2.cer")));
+        list.add(new FileInputStream(new File("src/main/files/cert.end.entities/Carol_2.cer")));
+        list.add(new FileInputStream(new File("src/main/files/trust.anchors/CA1.cer")));
+        list.add(new FileInputStream(new File("src/main/files/trust.anchors/CA2.cer")));
+        //list.add(new FileInputStream(new File("src/main/files/pfx/Alice_1.pfx")));
+        //list.add(new FileInputStream(new File("src/main/files/pfx/Alice_2.pfx")));
+        //list.add(new FileInputStream(new File("src/main/files/pfx/Bob_1.pfx")));
+        //list.add(new FileInputStream(new File("src/main/files/pfx/Bob_2.pfx")));
+        //list.add(new FileInputStream(new File("src/main/files/pfx/Carol_2.pfx")));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class CertificatesTest {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         X509Certificate cer = (X509Certificate) cf.generateCertificate(
                 new FileInputStream(
-                        new File("src/test/files/cert.end.entities/Carol_2.cer")));
+                        new File("src/main/files/cert.end.entities/Carol_2.cer")));
 
         Certificates certificates = Certificates.create(list);
 
@@ -55,7 +55,7 @@ public class CertificatesTest {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         X509Certificate cer = (X509Certificate) cf.generateCertificate(
                 new FileInputStream(
-                        new File("src/test/files/cert.end.entities/Carol_2.cer")));
+                        new File("src/main/files/cert.end.entities/Carol_2.cer")));
 
         Certificates certificates = Certificates.create(list);
 

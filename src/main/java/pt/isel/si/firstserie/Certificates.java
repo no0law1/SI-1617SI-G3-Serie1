@@ -16,7 +16,7 @@ public class Certificates {
     private LinkedList<TrustAnchor> trustRoot;
     private LinkedList<X509Certificate> intermediates;
 
-    public Certificates(LinkedList<TrustAnchor> trustRoot, LinkedList<X509Certificate> intermediates) {
+    private Certificates(LinkedList<TrustAnchor> trustRoot, LinkedList<X509Certificate> intermediates) {
         this.trustRoot = trustRoot;
         this.intermediates = intermediates;
     }
