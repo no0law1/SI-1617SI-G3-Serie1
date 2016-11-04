@@ -1,7 +1,5 @@
 package pt.isel.si.firstserie;
 
-import pt.isel.si.firstserie.exceptions.CertificateVerificationException;
-
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.*;
@@ -22,8 +20,6 @@ public class Certificates {
         this.trustRoot = trustRoot;
         this.intermediates = intermediates;
     }
-
-    //TODO: obter chave privada de uma keystore
 
     private static boolean isSelfSigned(X509Certificate certificate) throws CertificateException, NoSuchAlgorithmException, NoSuchProviderException {
         try {
@@ -49,7 +45,6 @@ public class Certificates {
         return new Certificates(trustRoot, intermediates);
     }
 
-    //TODO: validar certificado e obter a chave pública
     public boolean validate(X509Certificate certificate) throws CertificateException,
             NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
 
@@ -82,10 +77,14 @@ public class Certificates {
         return true;
     }
 
-    public PublicKey getKey(X509Certificate certificate) throws CertificateException, NoSuchAlgorithmException, CertificateVerificationException, NoSuchProviderException, InvalidAlgorithmParameterException, CertPathBuilderException {
+    public PublicKey getKey(X509Certificate certificate) throws CertificateException, NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException, CertPathBuilderException {
         if(validate(certificate)){
             return certificate.getPublicKey();
         }
         return null;
     }
+
+    /*public Certificate[] getCertPath() {
+        return certPath;
+    }*/
 }

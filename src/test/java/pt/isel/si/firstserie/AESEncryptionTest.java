@@ -6,8 +6,7 @@ import org.junit.Test;
 import javax.crypto.SecretKey;
 import java.io.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * TODO: Commentary
@@ -49,15 +48,18 @@ public class AESEncryptionTest {
 
         aes.encrypt(toEncript, cipherText, key);
 
-        // SAVE in file
-        cipherText.flush();
-        cipherText.close();
-
         // LOAD from file
-        InputStream toDecrypt = new FileInputStream(new File("src/test/files/cipherText.pdf"));
-        OutputStream plainText = new FileOutputStream(new File("src/test/files/plainText.pdf"));
+        File cipherTextFile = new File("src/test/files/cipherText.pdf");
+        File plainTextFile = new File("src/test/files/plainText.pdf");
+        InputStream toDecrypt = new FileInputStream(cipherTextFile);
+        OutputStream plainText = new FileOutputStream(plainTextFile);
 
         aes.decrypt(toDecrypt, plainText, key);
+        assertTrue(cipherTextFile.exists());
+        assertTrue(plainTextFile.exists());
+
+        assertTrue(cipherTextFile.delete());
+        assertTrue(plainTextFile.delete());
     }
 
 }

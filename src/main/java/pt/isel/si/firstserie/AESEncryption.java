@@ -55,7 +55,8 @@ public class AESEncryption {
         return new AESEncryption(cipher, spec);
     }
 
-    public byte[] encrypt(InputStream toEncrypt, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public byte[] encrypt(InputStream toEncrypt, SecretKey key) throws IOException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         try(ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             try (CipherOutputStream writer = new CipherOutputStream(stream, cipher)) {
@@ -69,7 +70,8 @@ public class AESEncryption {
         }
     }
 
-    public byte[] decrypt(InputStream toDecrypt, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public byte[] decrypt(InputStream toDecrypt, SecretKey key) throws IOException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         cipher.init(Cipher.DECRYPT_MODE, key, spec);
         try(ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
             try (CipherInputStream reader = new CipherInputStream(toDecrypt, cipher)) {
@@ -85,7 +87,22 @@ public class AESEncryption {
         }
     }
 
-    public boolean encrypt(InputStream toEncrypt, OutputStream output, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    /**
+     * Encrypts input stream to the output stream
+     * Closes both input stream and output stream
+     *
+     * @param toEncrypt
+     * @param output
+     * @param key
+     * @return
+     * @throws IOException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeyException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     */
+    public boolean encrypt(InputStream toEncrypt, OutputStream output, SecretKey key) throws IOException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         try (CipherOutputStream writer = new CipherOutputStream(output, cipher)) {
             byte[] chunk = new byte[AES_CHUNKS];
@@ -94,10 +111,26 @@ public class AESEncryption {
                 writer.write(chunk);
             }
         }
+        toEncrypt.close();
         return true;
     }
 
-    public boolean decrypt(InputStream toDecrypt, OutputStream output, SecretKey key) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    /**
+     * Decrypts input stream to output stream.
+     * Closes both output stream and input stream
+     *
+     * @param toDecrypt
+     * @param output
+     * @param key
+     * @return
+     * @throws IOException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeyException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     */
+    public boolean decrypt(InputStream toDecrypt, OutputStream output, SecretKey key) throws IOException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         cipher.init(Cipher.DECRYPT_MODE, key, spec);
         try (CipherInputStream reader = new CipherInputStream(toDecrypt, cipher)) {
             byte[] chunk = new byte[AES_CHUNKS];
@@ -106,15 +139,18 @@ public class AESEncryption {
                 output.write(chunk);
             }
         }
+        output.close();
         return true;
     }
 
-    public byte[] encrypt(byte[] toEncrypt, SecretKey key) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+    public byte[] encrypt(byte[] toEncrypt, SecretKey key) throws InvalidKeyException,
+            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         return cipher.doFinal(toEncrypt);
     }
 
-    public byte[] decrypt(byte[] toDecrypt, SecretKey key) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+    public byte[] decrypt(byte[] toDecrypt, SecretKey key) throws InvalidKeyException,
+            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         cipher.init(Cipher.DECRYPT_MODE, key, spec);
         return cipher.doFinal(toDecrypt);
     }
