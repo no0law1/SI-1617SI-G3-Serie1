@@ -1,4 +1,4 @@
-package pt.isel.si.firstserie;
+package pt.isel.si.firstserie.crypt;
 
 import pt.isel.si.firstserie.exceptions.NoAliasException;
 
@@ -9,10 +9,22 @@ import java.security.cert.CertificateException;
 import java.util.Enumeration;
 
 /**
- * TODO: Commentary
+ * Working with keystores
  */
 public class Keystores {
 
+    /**
+     * Load a private key from a .pfx file
+     * @param stream
+     * @param pass
+     * @return
+     * @throws KeyStoreException
+     * @throws CertificateException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws UnrecoverableKeyException
+     * @throws NoAliasException
+     */
     public static PrivateKey getPFXKeystoreKey(InputStream stream, char[] pass) throws KeyStoreException,
             CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableKeyException, NoAliasException {
         KeyStore store = KeyStore.getInstance("PKCS12");

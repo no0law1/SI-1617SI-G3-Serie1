@@ -1,6 +1,9 @@
 package pt.isel.si.firstserie;
 
 import org.junit.Test;
+import pt.isel.si.firstserie.crypt.AESEncryption;
+import pt.isel.si.firstserie.crypt.Algorithms;
+import pt.isel.si.firstserie.crypt.RSAEncryption;
 
 import javax.crypto.SecretKey;
 import java.security.KeyPair;
@@ -27,11 +30,11 @@ public class RSAEncryptionTest {
 
         KeyPair keyPair = RSAEncryption.generateRSAKey();
 
-        RSAEncryption rsa = RSAEncryption.create(Algorithms.RSA_ECB_OAEPWithSHA1ANDMGF1PADDING);
+        RSAEncryption rsa = RSAEncryption.create();
 
-        byte[] encryptedKey = rsa.encrypt(keyPair.getPublic(), expected);
+        byte[] encryptedKey = rsa.encrypt(expected.getEncoded(), keyPair.getPublic());
 
-        byte[] actual = rsa.decrypt(keyPair.getPrivate(), encryptedKey);
+        byte[] actual = rsa.decrypt(encryptedKey, keyPair.getPrivate());
 
         assertArrayEquals(expected.getEncoded(), actual);
     }

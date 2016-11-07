@@ -2,25 +2,24 @@ package pt.isel.si.firstserie;
 
 import org.junit.Before;
 import org.junit.Test;
+import pt.isel.si.firstserie.crypt.AESEncryption;
 
 import javax.crypto.SecretKey;
-import java.io.*;
 
 import static org.junit.Assert.*;
 
 /**
- * TODO: Commentary
+ * Aes Encryption class tests
  */
 public class AESEncryptionTest {
 
     private SecretKey key;
-
     private AESEncryption aes;
 
     @Before
     public void setUp() throws Exception {
         key = AESEncryption.generateSecretKey();
-        aes = AESEncryption.create(Algorithms.AES_GCM_NOPADDING, AESEncryption.generateIV());
+        aes = AESEncryption.create(AESEncryption.generateIV());
     }
 
     @Test
@@ -32,34 +31,39 @@ public class AESEncryptionTest {
     public void testAESAlgorithm() throws Exception {
         byte[] expected = "password123456789".getBytes();
 
-        InputStream toEncript = new ByteArrayInputStream(expected);
+        byte[] cipherText = aes.encrypt(expected, key);
 
-        byte[] cipherText = aes.encrypt(toEncript, key);
-
-        byte[] actual = aes.decrypt(new ByteArrayInputStream(cipherText), key);
+        byte[] actual = aes.decrypt(cipherText, key);
 
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void testLargeFile() throws Exception {
-        InputStream toEncript = new FileInputStream(new File("src/test/files/test.pdf"));
-        OutputStream cipherText = new FileOutputStream(new File("src/test/files/cipherText.pdf"));
+    public void testFailedDecryption() throws Exception {
+        byte[] expected = "olaola".getBytes();
 
-        aes.encrypt(toEncript, cipherText, key);
+        byte[] cipherText = aes.encrypt(expected, key);
+        cipherText[1] = 0x00;
 
-        // LOAD from file
-        File cipherTextFile = new File("src/test/files/cipherText.pdf");
-        File plainTextFile = new File("src/test/files/plainText.pdf");
-        InputStream toDecrypt = new FileInputStream(cipherTextFile);
-        OutputStream plainText = new FileOutputStream(plainTextFile);
+        try {
+            byte[] actual = aes.decrypt(cipherText, key);
+            fail(); // Should throw exception!
+        } catch (Exception e) {
+            // everything is fine!
+        }
+    }
 
-        aes.decrypt(toDecrypt, plainText, key);
-        assertTrue(cipherTextFile.exists());
-        assertTrue(plainTextFile.exists());
+    @Test
+    public void testSplitTag() throws Exception {
+        byte[] expected = "olaola".getBytes();
 
-        assertTrue(cipherTextFile.delete());
-        assertTrue(plainTextFile.delete());
+        byte[] cipherText = aes.encrypt(expected, key);
+
+        System.out.println(cipherText.length);
+
+        byte[][] res = AESEncryption.splitAuthTag(cipherText);
+        assertEquals(2, res.length);
+        assertEquals(AESEncryption.GCM_TAG_LENGTH / 8, res[1].length);
     }
 
 }
