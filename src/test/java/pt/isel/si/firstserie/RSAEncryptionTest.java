@@ -2,7 +2,6 @@ package pt.isel.si.firstserie;
 
 import org.junit.Test;
 import pt.isel.si.firstserie.crypt.AESEncryption;
-import pt.isel.si.firstserie.crypt.Algorithms;
 import pt.isel.si.firstserie.crypt.RSAEncryption;
 
 import javax.crypto.SecretKey;
@@ -11,7 +10,7 @@ import java.security.KeyPair;
 import static org.junit.Assert.*;
 
 /**
- * TODO: Commentary
+ * Test RSA encryption class
  */
 public class RSAEncryptionTest {
 

@@ -1,6 +1,5 @@
 package pt.isel.si.firstserie;
 
-import org.junit.Before;
 import org.junit.Test;
 import pt.isel.si.firstserie.crypt.Certificates;
 
@@ -12,7 +11,7 @@ import java.security.cert.X509Certificate;
 import static org.junit.Assert.*;
 
 /**
- * TODO: Commentary
+ * Test Certificates class
  */
 public class CertificatesTest {
 

@@ -11,7 +11,7 @@ import java.security.Key;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * TODO: Commentary
+ * Test Keystores class
  */
 public class KeystoresTest {
 

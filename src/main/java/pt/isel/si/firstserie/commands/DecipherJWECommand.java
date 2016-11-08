@@ -26,6 +26,20 @@ public class DecipherJWECommand implements ICommand {
 
     private static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * To decrypt a JWE:
+     * - Validate the header
+     * - Decrypt the CEK using RSA with the private key in pfx
+     * - Decrypt the message using the IV, cipheredMessage and the authTag
+     *
+     * This commands asks for the password of the .pfx
+     * Asks where to save the new decrypted file
+     * Saves the result in a new file
+     *
+     * @param file JWE file encrypted
+     * @param pfx .pfx file with the private key to decrypt
+     * @throws Exception
+     */
     @Override
     public void execute(File file, File pfx) throws Exception {
         RSAEncryption rsa = RSAEncryption.create();
@@ -55,44 +69,21 @@ public class DecipherJWECommand implements ICommand {
         byte[] authTag = Utils.base64Decode(data[4].getBytes());
 
         byte[] message = Utils.joinArrays(cipherMessage, authTag);
+        AESEncryption aes = AESEncryption.create(iv);
+        SecretKey aesKey = new SecretKeySpec(decryptedAESkey, 0, decryptedAESkey.length, "AES");
 
-        // join cipher text + tag
+        byte[] originalMessage;
+        try {
+            originalMessage = aes.decrypt(message, aesKey);
+        } catch (Exception e) {
+            throw new Exception("Error decrypting the file!");
+        }
 
-        System.out.println(privateKey.getEncoded());
-        System.out.println("OK");
+        System.out.println("Where to save the decrypted file?");
+        String newFile = scanner.nextLine();
 
-//
-//
-//        byte[] iv = AESEncryption.generateIV();
-//
-//        AESEncryption aes = AESEncryption.create(iv);
-//        SecretKey secretKey = AESEncryption.generateSecretKey();
-//
-//        PublicKey publicKey = null;
-//        try {
-//            publicKey = loadKeyFromCertificate(new FileInputStream(cert));
-//        } catch (Exception e) {
-//            System.out.println("Invalid Certificate!");
-//            e.printStackTrace();
-//            return;
-//        }
-//
-//        byte[] fileContent = FileUtils.readFileToByteArray(file);
-//
-//        byte[] header = JWEMapper.HEADER.getBytes("UTF-8");
-//        byte[] cek = rsa.encrypt(secretKey.getEncoded(), publicKey);
-//        byte[] cipherMessage = aes.encrypt(fileContent, secretKey);
-//
-//        // 0 -> cipherMessage, 1 -> authTag
-//        byte[][] cipherMessageSplited = AESEncryption.splitAuthTag(cipherMessage);
-//
-//        JWEMapper jwe = new JWEMapper(header, cek, iv, cipherMessageSplited[0], cipherMessageSplited[1]);
-//
-//        System.out.println("Set path of ciphered file to save: ");
-//        String path = new Scanner(System.in).nextLine();
-//
-//        FileUtils.writeStringToFile(new File(path), jwe.createCompactFormat(), "UTF-8");
-//        System.out.println("JWE succefully created!");
+        FileUtils.writeByteArrayToFile(new File(newFile), originalMessage);
+        System.out.println("Success! Saved!");
     }
 
 }

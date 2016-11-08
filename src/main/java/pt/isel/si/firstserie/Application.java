@@ -10,6 +10,10 @@ import java.util.HashMap;
 /**
  * Main entry for the program,
  * Receives commands from the args and executes them
+ *
+ * Example commands:
+ * cipher C:\\file.txt C:\\certificate.cer
+ * decipher C:\\encrypted.txt C:\\keystore.pfx
  */
 public class Application {
 

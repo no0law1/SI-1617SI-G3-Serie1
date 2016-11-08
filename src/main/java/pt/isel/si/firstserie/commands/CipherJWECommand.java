@@ -1,12 +1,10 @@
 package pt.isel.si.firstserie.commands;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import pt.isel.si.firstserie.crypt.AESEncryption;
 import pt.isel.si.firstserie.crypt.Certificates;
 import pt.isel.si.firstserie.crypt.RSAEncryption;
 import pt.isel.si.firstserie.view.JWEMapper;
-import sun.nio.ch.IOUtil;
 
 import javax.crypto.SecretKey;
 import java.io.*;
@@ -22,6 +20,19 @@ import java.util.Scanner;
  */
 public class CipherJWECommand implements ICommand {
 
+    /**
+     * Info on encrypt a JWE file:
+     * https://tools.ietf.org/html/rfc7516#section-3.3
+     *
+     * Steps:
+     * - Generate header
+     * - Encrypt the AES key with RSA and a public key
+     * - Encrypt the message and preserve the authTag from GCM
+     *
+     * @param file File to encrypt to a JWE file
+     * @param cert .cert Certificate with a public key, will be validated
+     * @throws Exception
+     */
     @Override
     public void execute(File file, File cert) throws Exception {
         byte[] iv = AESEncryption.generateIV();
