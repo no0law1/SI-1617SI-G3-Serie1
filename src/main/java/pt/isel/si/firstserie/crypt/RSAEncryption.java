@@ -24,7 +24,7 @@ public class RSAEncryption {
      * @throws NoSuchAlgorithmException
      */
     public static RSAEncryption create() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        Cipher cipher = Cipher.getInstance(Algorithms.RSA_ECB_OAEPWithSHA1ANDMGF1PADDING);
+        Cipher cipher = Cipher.getInstance(Algorithms.RSA_OAEP);
 
         return new RSAEncryption(cipher);
     }

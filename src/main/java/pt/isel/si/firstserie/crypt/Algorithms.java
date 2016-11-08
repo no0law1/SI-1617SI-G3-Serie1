@@ -5,11 +5,11 @@ package pt.isel.si.firstserie.crypt;
  */
 public class Algorithms {
 
+    public static final String RSA_OAEP = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding"; // 1024, 2048
+    public static final String AES_GCM_NOPADDING = "AES/GCM/NoPadding";
     public static final String AES_CBC_NOPADDING = "AES/CBC/NoPadding"; // 128
     public static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding"; // 128
-    public static final String AES_GCM_NOPADDING = "AES/GCM/NoPadding";
     public static final String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding"; // 1024, 2048
-    public static final String RSA_ECB_OAEPWithSHA1ANDMGF1PADDING = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding"; // 1024, 2048
     public static final String RSA_ECB_OAEPWithSHA256AndMGF1Padding = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"; // 1024, 2048
 
     /*
