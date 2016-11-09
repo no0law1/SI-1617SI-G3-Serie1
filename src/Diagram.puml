@@ -1,0 +1,107 @@
+@startuml
+
+package pt.isel.si.firstserie{
+package commands{
+    interface ICommand{
+        + execute(File jwt, File cert)
+    }
+
+    class CipherJWECommand{
+        + execute(File file, File cert)
+        - PublicKey loadKeyFromCertificate(InputStream cert)
+    }
+
+    class DecipherJWECommand{
+        - static Scanner scanner
+        + execute(File file, File pfx)
+    }
+}
+package crypt{
+    class AESEncryption{
+        + static final int GCM_TAG_LENGTH
+        - static final int AES_KEY_SIZE
+        - static final int GCM_NONCE_LENGTH
+        - Cipher cipher
+        - GCMParameterSpec spec
+        - AESEncryption (Cipher cipher, GCMParameterSpec)
+        + static AESEncryption create (byte [] nonce)
+        + static SecretKey generateSecretKey()
+        + static byte[] generateIV()
+        + byte[] encrypt (byte [] toEncrypt, SecretKey key)
+        + byte[] decrypt (byte [] toDecrypt, SecretKey key)
+        + GCMParameterSpec getSpec()
+        + static byte[][] splitAuthTag(byte[] encriptedBytes)
+    }
+
+    class Algorithms{
+        + static final String RSA_OAEP
+        + static final String AES_GCM_NOPADDING
+        + static final String AES_CBC_NOPADDING
+        + static final String AES_CBC_PKCS5PADDING
+        + static final String RSA_ECB_PKCS1PADDING
+        + static final String RSA_ECB_OAEPWithSHA256AndMGF1Padding
+    }
+
+    class Certificates{
+        - static final String X509
+        - LinkedList<TrustAnchor> trustRoot
+        - LinkedList<X509Certificate> intermediates
+        - Certificates(LinkedList<TrustAnchor> trustRoot, LinkedList<X509Certificate> intermediates)
+        + static Certificates create()
+        + boolean validate(X509Certificate certificate)
+        + PublicKey getKey(X509Certificate certificate)
+        - static LinkedList<InputStream> loadLocalCertificates()
+        - static boolean isSelfSigned(X509Certificate certificate)
+    }
+
+    class Keystores{
+        + static PrivateKey getPFXKeystoreKey(InputStream stream, char[] pass)
+    }
+
+    class RSAEncryption{
+        - static final int RSA_KEY_SIZE
+        - Cipher cipher
+        - RSAEncryption(Cipher cipher)
+        + static RSAEncryption create()
+        + static KeyPair generateRSAKey()
+        + byte[] encrypt(byte[] toEncrypt, PublicKey publicKey)
+        + byte[] decrypt(byte[] encryptedKey, PrivateKey privateKey)
+    }
+}
+
+package exceptions{
+    class NoAliasException{
+        + NoAliasException()
+        + NoAliasException(String message)
+        + NoAliasException(String message, Throwable cause)
+        + NoAliasException(Throwable cause)
+    }
+}
+
+package view{
+    class JWEMapper{
+        + static final String HEADER
+        - byte[] headers
+        - byte[] encryptedKey
+        - byte[] iv
+        - byte[] cipherText
+        - byte[] authTag
+        + JWEMapper(byte[] headers, byte[] encryptedKey, byte[] iv, byte[] cipherText, byte[] authTag)
+        + String createCompactFormat()
+    }
+}
+
+class Application{
+    - static HashMap<String, ICommand> commands
+    + static void main(String[] args)
+    - static void run(String operation, File file, File cert)
+}
+
+class Utils{
+     + static String base64Encode(byte[] bytes)
+     + static String base64DecodeToString(byte[] bytes)
+     + static byte[] base64Decode(byte[] bytes)
+     + static byte[] joinArrays(byte[] a, byte[] b)
+}
+}
+@enduml
