@@ -1,7 +1,7 @@
 package pt.isel.si.firstserie;
 
 import org.junit.Test;
-import pt.isel.si.firstserie.crypt.AESEncryption;
+import pt.isel.si.firstserie.crypt.Encryption;
 import pt.isel.si.firstserie.crypt.RSAEncryption;
 
 import javax.crypto.SecretKey;
@@ -25,7 +25,7 @@ public class RSAEncryptionTest {
 
     @Test
     public void testEncryptAESKeyWithRSA() throws Exception {
-        SecretKey expected = AESEncryption.generateSecretKey();
+        SecretKey expected = Encryption.generateSecretKey();
 
         KeyPair keyPair = RSAEncryption.generateRSAKey();
 

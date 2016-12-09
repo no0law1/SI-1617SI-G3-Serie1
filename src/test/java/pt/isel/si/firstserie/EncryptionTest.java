@@ -2,24 +2,26 @@ package pt.isel.si.firstserie;
 
 import org.junit.Before;
 import org.junit.Test;
-import pt.isel.si.firstserie.crypt.AESEncryption;
+import pt.isel.si.firstserie.crypt.Encryption;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 
 import static org.junit.Assert.*;
+import static pt.isel.si.firstserie.crypt.Encryption.TAG_LENGTH;
 
 /**
  * Aes Encryption class tests
  */
-public class AESEncryptionTest {
+public class EncryptionTest {
 
     private SecretKey key;
-    private AESEncryption aes;
+    private Encryption aes;
 
     @Before
     public void setUp() throws Exception {
-        key = AESEncryption.generateSecretKey();
-        aes = AESEncryption.create(AESEncryption.generateIV());
+        key = Encryption.generateSecretKey();
+        aes = Encryption.create(new GCMParameterSpec(TAG_LENGTH, Encryption.generateIV()));
     }
 
     @Test
@@ -61,9 +63,9 @@ public class AESEncryptionTest {
 
         System.out.println(cipherText.length);
 
-        byte[][] res = AESEncryption.splitAuthTag(cipherText);
+        byte[][] res = Encryption.splitAuthTag(cipherText);
         assertEquals(2, res.length);
-        assertEquals(AESEncryption.GCM_TAG_LENGTH / 8, res[1].length);
+        assertEquals(TAG_LENGTH / 8, res[1].length);
     }
 
 }

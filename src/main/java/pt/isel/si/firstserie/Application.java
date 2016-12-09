@@ -1,8 +1,6 @@
 package pt.isel.si.firstserie;
 
-import pt.isel.si.firstserie.commands.CipherJWECommand;
-import pt.isel.si.firstserie.commands.DecipherJWECommand;
-import pt.isel.si.firstserie.commands.ICommand;
+import pt.isel.si.firstserie.commands.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -18,11 +16,15 @@ import java.util.HashMap;
 public class Application {
 
     private static HashMap<String, ICommand> commands;
+    private static HashMap<String, CommandWithPassword> commandsWithPassword;
 
     static {
         commands = new HashMap<>();
         commands.put("cipher", new CipherJWECommand());
         commands.put("decipher", new DecipherJWECommand());
+        commandsWithPassword = new HashMap<>();
+        commandsWithPassword.put("cipher", new CipherJWECommandWithPassword());
+        commandsWithPassword.put("decipher", new DecipherJWECommandWithPassword());
     }
 
     /**
@@ -32,11 +34,23 @@ public class Application {
      */
     public static void main(String[] args) throws Exception {
 
-        if(args.length < 3){
-            throw new IllegalArgumentException("usage: Application {operation} {jwtFilePath} {cerFilePath}");
+        if(args.length < 2){
+            throw new IllegalArgumentException("usage: Application {operation} {jwtFilePath} {cerFilePath} || {operation} {jwtFilePath}");
+        }
+        if(args.length == 3){
+            run(args[0], new File(args[1]), new File(args[2]));
+        } else {
+            runWithPass(args[0], new File(args[1]));
+        }
+    }
+
+    private static void runWithPass(String operation, File file) throws Exception {
+        CommandWithPassword command = commandsWithPassword.get(operation.toLowerCase());
+        if(command == null){
+            throw new UnsupportedOperationException(operation+" is not supported");
         }
 
-        run(args[0], new File(args[1]), new File(args[2]));
+        command.execute(file);
     }
 
     /**

@@ -2,22 +2,21 @@ package pt.isel.si.firstserie.commands;
 
 import org.apache.commons.io.FileUtils;
 import pt.isel.si.firstserie.Utils;
-import pt.isel.si.firstserie.crypt.AESEncryption;
 import pt.isel.si.firstserie.crypt.Algorithms;
+import pt.isel.si.firstserie.crypt.Encryption;
 import pt.isel.si.firstserie.crypt.Keystores;
 import pt.isel.si.firstserie.crypt.RSAEncryption;
 import pt.isel.si.firstserie.view.JWEMapper;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.security.Key;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.Arrays;
 import java.util.Scanner;
+
+import static pt.isel.si.firstserie.crypt.Encryption.TAG_LENGTH;
 
 /**
  * Decipher the JWE string using a .pfx file
@@ -69,7 +68,7 @@ public class DecipherJWECommand implements ICommand {
         byte[] authTag = Utils.base64Decode(data[4].getBytes());
 
         byte[] message = Utils.joinArrays(cipherMessage, authTag);
-        AESEncryption aes = AESEncryption.create(iv);
+        Encryption aes = Encryption.create(Algorithms.AES_GCM_NOPADDING, new GCMParameterSpec(TAG_LENGTH, iv));
         SecretKey aesKey = new SecretKeySpec(decryptedAESkey, 0, decryptedAESkey.length, "AES");
 
         byte[] originalMessage;
