@@ -27,7 +27,6 @@ public class Encryption {
 
     /**
      * Instance creator
-     * AES 128 GCM
      *
      * @return
      * @throws NoSuchPaddingException
@@ -41,7 +40,7 @@ public class Encryption {
     }
 
     /**
-     * Generate random AES secret key
+     * Generate random secret key
      *
      * @return
      * @throws NoSuchAlgorithmException

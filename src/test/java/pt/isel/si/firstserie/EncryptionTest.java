@@ -2,6 +2,7 @@ package pt.isel.si.firstserie;
 
 import org.junit.Before;
 import org.junit.Test;
+import pt.isel.si.firstserie.crypt.Algorithms;
 import pt.isel.si.firstserie.crypt.Encryption;
 
 import javax.crypto.SecretKey;
@@ -20,8 +21,8 @@ public class EncryptionTest {
 
     @Before
     public void setUp() throws Exception {
-        key = Encryption.generateSecretKey();
-        aes = Encryption.create(new GCMParameterSpec(TAG_LENGTH, Encryption.generateIV()));
+        key = Encryption.generateSecretKey("AES");
+        aes = Encryption.create(Algorithms.AES_GCM_NOPADDING, new GCMParameterSpec(TAG_LENGTH, Encryption.generateIV()));
     }
 
     @Test

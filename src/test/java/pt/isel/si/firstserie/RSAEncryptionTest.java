@@ -25,7 +25,7 @@ public class RSAEncryptionTest {
 
     @Test
     public void testEncryptAESKeyWithRSA() throws Exception {
-        SecretKey expected = Encryption.generateSecretKey();
+        SecretKey expected = Encryption.generateSecretKey("AES");
 
         KeyPair keyPair = RSAEncryption.generateRSAKey();
 
